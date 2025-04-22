@@ -38,8 +38,7 @@ def Sharpe(DF , safeReturn):
 
 def max_dd(DF):
     df = DF.copy()
-    df["returns"] = df["Close"].pct_change()
-    df["cumilative_returns"] = (1 + df["returns"]).cumprod()
+    df["cumilative_returns"] = (1 + df["ret"]).cumprod()
     df["max_cumilative_return"] = df["cumilative_returns"].cummax()
     df["drawdown"] = df["max_cumilative_return"] - df["cumilative_returns"]
     pct_drop = (df["drawdown"] /df["max_cumilative_return"] ).max()
@@ -116,3 +115,5 @@ for ticker in tickers:
 strategy_return_df["ret"] = strategy_return_df.mean(axis=1)
 cagr = CAGR(strategy_return_df)
 sharpe = Sharpe(strategy_return_df, 0.07)
+dd = max_dd(strategy_return_df)
+calamar = calmar_ratio(strategy_return_df)
